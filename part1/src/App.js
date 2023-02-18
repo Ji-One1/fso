@@ -7,16 +7,26 @@ const Button = ({handleClick, text}) => {
   )
 }
 
-const Part = ({text, stat}) => <div>{text} {stat}</div>
+const StatisticLine = ({text, stat}) => <div>{text} {stat}</div>
 
 const Statistics = ({good, neutral, bad}) => {
+
   const totalTerms = good + neutral + bad
   const round = (num) => Math.round(num * 100) / 100
-
+  if (totalTerms === 0){
+    return(
+      <div>No Feedback Given</div>
+    )
+  }
 return(
 <div>
-  <div> {round((good - bad)/ totalTerms) } </div>
-  <div>{round(good/ totalTerms) * 100}% </div>
+  <StatisticLine text={'Good'} stat={good} />
+  <StatisticLine text={'neutral'} stat={neutral} />
+  <StatisticLine text={'bad'} stat={bad} />
+  <StatisticLine text={'average'} stat={round((good - bad)/ totalTerms)} />
+  <StatisticLine text={'positive'} stat={round((good)/ totalTerms)} />
+
+  
 </div>
 )}
 
@@ -37,9 +47,6 @@ const App = () => {
         <Button handleClick={()=> handleClick(neutral, setNeutral)} text={'neutral'} />
         <Button handleClick={()=> handleClick(bad, setBad)} text={'bad'}/>
       <h1>Statistics</h1>
-        <Part text={'Good'} stat={good} />
-        <Part text={'neutral'} stat={neutral} />
-        <Part text={'bad'} stat={bad} />
         <Statistics good={good} neutral={neutral} bad={bad} />
 
     </div>
