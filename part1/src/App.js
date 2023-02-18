@@ -1,67 +1,38 @@
 
+import { useState } from 'react'
 
-const Header = (props) => {
-
+const Button = ({handleClick, text}) => {
   return(
-  <div>
-      <h1>{props.course.name}</h1>
-  </div>
-)}
+    <button onClick={()=> handleClick()}>{text}</button>
+  )
+}
 
-const Part = (props) => {
-return(
-    <p>
-        {props.part} {props.exercises}
-    </p>
-
-)}
+const Part = ({text, stat}) => <div>{text} {stat}</div>
 
 
-
-
-const Content = (props) => {
-  return(
-  <div>
-    <Part  part ={props.part[0].name} exercises = {props.part[0].exercises} />
-    <Part  part ={props.part[1].name} exercises = {props.part[1].exercises} />
-    <Part  part ={props.part[2].name} exercises = {props.part[2].exercises} />
-  </div>
-)}
-
-const Total = (props) => {
-  return(
-  <div>
-     <p>Number of exercises {props.part[0].exercises + props.part[1].exercises + props.part[2].exercises}</p>
-  </div>
-)}
 
 
 const App = () => {
-  const course = {
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7
-      },
-      {
-        name: 'State of a component',
-        exercises: 14
-      }
-    ]
-  }
+  // save clicks of each button to its own state
+  const [good, setGood] = useState(0)
+  const [neutral, setNeutral] = useState(0)
+  const [bad, setBad] = useState(0)
+
+  const handleClick = (state, func) => func(state  + 1)
 
   return (
     <div>
-      <Header course = {course}/>
-      <Content part = {course.parts}/>
-      <Total part = {course.parts}/>
+      <h1>give feedback</h1>
+      <Button handleClick={()=> handleClick(good, setGood)} text={'Good'}/>
+      <Button handleClick={()=> handleClick(neutral, setNeutral)} text={'neutral'} />
+      <Button handleClick={()=> handleClick(bad, setBad)} text={'bad'}/>
+      <h1>Statistics</h1>
+      <Part text={'Good'} stat={good} />
+      <Part text={'neutral'} stat={neutral} />
+      <Part text={'bad'} stat={bad} />
 
     </div>
   )
 }
+
 export default App
