@@ -19,16 +19,31 @@ const Statistics = ({good, neutral, bad}) => {
     )
   }
 return(
-<div>
-  <StatisticLine text={'Good'} stat={good} />
-  <StatisticLine text={'neutral'} stat={neutral} />
-  <StatisticLine text={'bad'} stat={bad} />
-  <StatisticLine text={'average'} stat={round((good - bad)/ totalTerms)} />
-  <StatisticLine text={'positive'} stat={round((good)/ totalTerms)} />
+<table>
+  <tbody>
+    <tr>
+      <th>Good</th>
+      <th>neutral</th> 
+      <th>bad</th>
+      <th>average</th>
+      <th>positive</th>
+    </tr>
+    <tr>
+      <td>{good}</td>
+      <td>{neutral}</td> 
+      <td>{bad}</td> 
+      <td>{round((good - bad)/ totalTerms)}</td> 
+      <td>{round((good)/ totalTerms)}</td> 
+    </tr>
+  </tbody>
+</table>
 
-  
-</div>
 )}
+
+
+
+
+
 
 
 
