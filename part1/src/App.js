@@ -1,59 +1,32 @@
-
 import { useState } from 'react'
 
-const Button = ({handleClick, text}) => {
-  return(
-    <button onClick={()=> handleClick()}>{text}</button>
-  )
-}
-
-const StatisticLine = ({text, stat}) => {
-  return(
-  <tr> 
-    <td>{text} </td>
-    <td> {stat}</td>
-  </tr>
-  )}
-
-const Statistics = ({good, neutral, bad}) => {
-
-  const totalTerms = good + neutral + bad
-  const round = (num) => Math.round(num * 100) / 100
-  if (totalTerms === 0){
-    return(
-      <div>No Feedback Given</div>
-    )
-  }
-return(
-<table>
-
-  <StatisticLine text={'Good'} stat={good} />
-  <StatisticLine text={'neutral'} stat={neutral} />
-  <StatisticLine text={'bad'} stat={bad} />
-  <StatisticLine text={'average'} stat={round((good - bad)/ totalTerms)} />
-  <StatisticLine text={'positive'} stat={round((good)/ totalTerms)} />
-
-</table>
-)}
-
-
 const App = () => {
-  // save clicks of each button to its own state
-  const [good, setGood] = useState(0)
-  const [neutral, setNeutral] = useState(0)
-  const [bad, setBad] = useState(0)
+  const anecdotes = [
+    'If it hurts, do it more often.',
+    'Adding manpower to a late software project makes it later!',
+    'The first 90 percent of the code accounts for the first 10 percent of the development time...The remaining 10 percent of the code accounts for the other 90 percent of the development time.',
+    'Any fool can write code that a computer can understand. Good programmers write code that humans can understand.',
+    'Premature optimization is the root of all evil.',
+    'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
+    'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
+    'The only way to go fast, is to go well.'
+  ]
 
-  const handleClick = (state, func) => func(state  + 1)
+  const handleClick = () => {
+    const max = anecdotes.length
+    const randInt = Math.floor(Math.random() * (max))
+    setSelected(randInt)
+   }
+
+   
+  const [selected, setSelected] = useState(0)
 
   return (
     <div>
-      <h1>give feedback</h1>
-        <Button handleClick={()=> handleClick(good, setGood)} text={'Good'}/>
-        <Button handleClick={()=> handleClick(neutral, setNeutral)} text={'neutral'} />
-        <Button handleClick={()=> handleClick(bad, setBad)} text={'bad'}/>
-      <h1>Statistics</h1>
-        <Statistics good={good} neutral={neutral} bad={bad} />
-
+      {anecdotes[selected]}
+      <div>
+        <button onClick={handleClick}>next anecdote</button>
+      </div>
     </div>
   )
 }
