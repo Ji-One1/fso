@@ -11,10 +11,7 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-  const lsOfZeroes = []
-  anecdotes.forEach(anecdote => lsOfZeroes.push(0))
-  const [points, setPoints] = useState(lsOfZeroes)
-  
+
 
   const handleClick = () => {
     const max = anecdotes.length
@@ -26,19 +23,35 @@ const App = () => {
     const copy = {...points}
     copy[selected] += 1
     setPoints(copy)
-  }
+    if (copy[selected] > copy[top]){
+      setTop(selected)
+    }
 
-   
+
+  }
+  const lsOfZeroes = []
+  anecdotes.forEach(anecdote => lsOfZeroes.push(0))
+  const [points, setPoints] = useState(lsOfZeroes)
+  const [top, setTop] = useState(0)
   const [selected, setSelected] = useState(0)
+
+
 
   return (
     <div>
+      <h1>Anectdote of the day</h1>
       {anecdotes[selected]}
       <div>has {points[selected]} votes</div>
       <div>
         <button onClick={handleVote}>vote</button>
         <button onClick={handleClick}>next anecdote</button>
       </div>
+      <h1>Anectdote with most votes</h1>
+      <div>
+      {anecdotes[top]}
+      <div>has {points[top]} votes</div>
+      </div>
+
     </div>
   )
 }
