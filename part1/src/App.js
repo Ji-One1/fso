@@ -11,6 +11,10 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
+  const lsOfZeroes = []
+  anecdotes.forEach(anecdote => lsOfZeroes.push(0))
+  const [points, setPoints] = useState(lsOfZeroes)
+  
 
   const handleClick = () => {
     const max = anecdotes.length
@@ -18,13 +22,21 @@ const App = () => {
     setSelected(randInt)
    }
 
+  const handleVote = () => {
+    const copy = {...points}
+    copy[selected] += 1
+    setPoints(copy)
+  }
+
    
   const [selected, setSelected] = useState(0)
 
   return (
     <div>
       {anecdotes[selected]}
+      <div>has {points[selected]} votes</div>
       <div>
+        <button onClick={handleVote}>vote</button>
         <button onClick={handleClick}>next anecdote</button>
       </div>
     </div>
