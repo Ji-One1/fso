@@ -27,8 +27,10 @@ const App = () => {
       number: newNumber
     }
     if (persons.some((person)=> person.name === newName)){
-      contactService.update(newName, newPerson)
-      .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
+      const duplicate = persons.find(dupe => dupe.name === newName)
+      
+      contactService.update(duplicate.id, newPerson)
+      .then(returnedPerson => setPersons(persons.map(person => person.name === returnedPerson.name ? returnedPerson : person)))
     }
     else{
     contactService.create(newPerson)
