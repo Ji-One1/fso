@@ -1,6 +1,6 @@
 import contactService from "../services/contactService";
 
-const Contact = ({filteredContacts, persons, setPersons}) => {
+const Contact = ({filteredContacts, persons, setPersons, setErrorObject}) => {
     const handleDelete = (e) => {
         e.preventDefault()
         const duplicate = persons.find(dupe => dupe.id == e.target.id)
@@ -10,6 +10,13 @@ const Contact = ({filteredContacts, persons, setPersons}) => {
           
         contactService.deleteContact(e.target.id)
         .then(setPersons(persons.filter(person => person.id !== parseInt(e.target.id))))
+        .catch(() => {
+            setErrorObject({action:'Deleted', name:duplicate.name, error: true})
+            setTimeout(() => setErrorObject({action:'Deleted', name:duplicate.name, error: null}), 5000)
+            }
+        )
+
+        
     }
 
     return(
