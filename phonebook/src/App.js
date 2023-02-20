@@ -1,35 +1,8 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
-
-const Filter = ({handleSubmit, filter, setFilter}) => {
-  
-  const handleFilterChange = e => setFilter(e.target.value)
-
-  return(
-    <form onSubmit={handleSubmit}>
-      <div>Filter shown with: <input value={filter} onChange={handleFilterChange}/></div>
-    </form>
-  )
-}
-
-const ContactForm = ({handleSubmit, newName, newNumber, setNewName, setNewNumber}) => {
-  const handleNameChange = (event) => setNewName(event.target.value)
-  const handleNumberChange = e => setNewNumber(e.target.value)
-
-  return(
-    <form onSubmit={handleSubmit}>
-    <div>name: <input value={newName} onChange={handleNameChange}/></div>
-    <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-    <div><button type="submit">add</button></div>
-  </form>
-  )
-}
-
-const Contact = ({filteredContacts}) => {
-  return(
-    filteredContacts.map(person => <div key={person.name}> {person.name} {person.number}</div>)
-  )
-}
+import Filter from './components/Filter'
+import ContactForm from './components/ContactForm'
+import Contact from './components/Contact'
+import contactService from './services/contactService'
 
 const App = () => {
 
@@ -38,16 +11,9 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
 
-  const initPersons = () => {
-    const URL = "http://localhost:3001/persons"
-    axios
-      .get(URL)
-      .then(response => setPersons(response.data))
-  }
-
-  useEffect(initPersons, [])
 
 
+  useEffect(() => setPersons(contactService.getAll()), [])
 
 
   const handleSubmit = (e) => {
@@ -60,7 +26,8 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    setPersons(persons.concat(newPerson))
+    setPersons(persons.concat(contactService.post(newPerson)))
+
     setNewName('')
     setNewNumber('')
     }
