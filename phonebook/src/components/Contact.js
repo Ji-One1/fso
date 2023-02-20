@@ -3,7 +3,8 @@ import contactService from "../services/contactService";
 const Contact = ({filteredContacts, persons, setPersons}) => {
     const handleDelete = (e) => {
         e.preventDefault()
-        if (!window.confirm("Do you really want to delete?")) {
+        const duplicate = persons.find(dupe => dupe.id == e.target.id)
+        if (!window.confirm(`Delete ${duplicate.name}?`)) {
             return;
           }
           
