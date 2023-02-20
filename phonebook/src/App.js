@@ -13,24 +13,32 @@ const App = () => {
 
 
 
-  useEffect(() => setPersons(contactService.getAll()), [])
+  useEffect(() => {
+    contactService.getAll()
+    .then(people => setPersons(people))
+  }, [])
 
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    if (persons.some((person)=> person.name === newName)){
-      window.alert(`${newName} is already added to phonebook`)
-      return
-    }
+   
     const newPerson = {
       name: newName,
       number: newNumber
     }
-    setPersons(persons.concat(contactService.post(newPerson)))
+    if (persons.some((person)=> person.name === newName)){
+      contactService.update(newName, newPerson)
+      .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
+    }
+    else{
+    contactService.create(newPerson)
+    .then(returnedPerson => {setPersons(persons.concat(returnedPerson))})
+    }
 
     setNewName('')
     setNewNumber('')
-    }
+    
+  }
   
     const filteredContacts =  persons.filter(person => person.name.toLowerCase().includes(filter.toLowerCase()))
 
@@ -43,7 +51,7 @@ const App = () => {
       <h2>Add Contact</h2>
       <ContactForm handleSubmit={handleSubmit} newName={newName} newNumber={newNumber} setNewName={setNewName} setNewNumber={setNewNumber}/>
       <h2>Numbers</h2>
-      <Contact filteredContacts={filteredContacts}/> 
+      <Contact filteredContacts={filteredContacts} persons={persons} setPersons={setPersons}/> 
     </div>
   )
 }
