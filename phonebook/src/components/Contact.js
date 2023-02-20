@@ -15,8 +15,6 @@ const Contact = ({filteredContacts, persons, setPersons, setErrorObject}) => {
             setTimeout(() => setErrorObject({action:'Deleted', name:duplicate.name, error: null}), 5000)
             }
         )
-
-        
     }
 
     return(
