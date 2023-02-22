@@ -1,26 +1,11 @@
-import axios from 'axios'
-import { useState } from 'react'
+const Finder = ({setResults, query, setQuery}) => {
 
-const Finder = ({setResults}) => {
-    const [query, setQuery] = useState('')
-    
+   
     const handleChange = e => {
         setQuery(e.target.value)
-        
-        if (e.target.value === ''){
-            setResults(null)
-            return
-        }
-
-        const urlExtension = e.target.value
-        const url = `https://restcountries.com/v3.1/name/${urlExtension}`
-        
-        axios
-            .get(url)
-            .then(response => setResults(response.data))
-            .catch(setResults([]))
     
     }
+    
     const handleSearch = e => {
         e.preventDefault()
     }
