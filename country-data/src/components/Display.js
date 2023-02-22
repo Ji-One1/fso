@@ -1,15 +1,35 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 
-const Display = ({results, setQuery}) => {
+const Display = ({results, setQuery, query}) => {
 
     const [weather, setWeather] = useState('')
+    const getCityWeather = city => {
+        const key = process.env.REACT_APP_API_KEY
+        const base = 'http://dataservice.accuweather.com/locations/v1/cities/search';
+        const query = `?apikey=${key}&q=${city}`;
     
-    if (results === null){
-        return
-    }
+        return axios
+            .get(base + query)
+            .then(response => {
+                const base = `http://dataservice.accuweather.com/currentconditions/v1/${response.data[0].Key}`
+                const query = `?apikey=${key}`
+                return axios
+                        .get(base + query)
+                        .then(response => response.data[0])
+            
+            })}
     
-    
+    useEffect(() => {
+        if (results.length === 1){
+            getCityWeather(results[0].capital)
+                .then(response => setWeather(response))
+            
+        }
+    }, [results])
+
+    console.log(weather);
+
     if (results.length > 10){
         return (
             <div>Too many matches, please be more specific</div>
@@ -27,22 +47,6 @@ const Display = ({results, setQuery}) => {
     } else if (results.length === 1){
         const country = results[0]
         
-        const getCityWeather = city => {
-            const key = '4a8d8JGneGxhWnrtz9I5x7VwHTGxbotb'
-            const base = 'http://dataservice.accuweather.com/locations/v1/cities/search';
-            const query = `?apikey=${key}&q=${city}`;
-        
-            return axios
-                .get(base + query)
-                .then(response => {
-                    const base = `http://dataservice.accuweather.com/currentconditions/v1/${response.data[0].Key}`
-                    const query = `?apikey=${key}`
-                    return axios
-                            .get(base + query)
-                            .then(response => response.data[0].Temperature.Metric.Value)
-                
-                })}
-        console.log(getCityWeather(country.capital))
         return(
             <div>
                 <h2>{country.name.common} {country.flag}</h2>
@@ -56,16 +60,21 @@ const Display = ({results, setQuery}) => {
                 <img src={country.flags.png} alt={country.flags.alt} />
 
                 <h4>Weather in {country.capital}</h4>
-                <div>temperature {weather} Celcius</div>
+                {weather && <div>It is {weather.Temperature.Metric.Value} Celcius</div>}
+                {weather && <div>Weather is {weather.WeatherText}</div>}
+
 
             </div>
         )
-    } else{
+    } else if (query.length !== 0){
         return(
             <div>Sorry! No country matches your search!</div>
             )
+    } else{
+        return
     }
 
 }
 
 export default Display
+

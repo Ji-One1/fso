@@ -5,12 +5,12 @@ import Finder from './components/Finder'
 import axios from 'axios'
 
 function App() {
-  const [results, setResults] = useState(null)
+  const [results, setResults] = useState([])
   const [query, setQuery] = useState('')
 
   const handleDisplayInfo = query => {
     if (query === ''){
-        setResults(null)
+        setResults([])
         return
     }
 
@@ -26,10 +26,13 @@ function App() {
 } 
   useEffect(() => handleDisplayInfo(query), [query])
 
+  
+
+
   return (
     <div className="App">
       <Finder  setResults={setResults} query={query} setQuery={setQuery}/>
-      <Display results={results} setQuery={setQuery}/>
+      <Display results={results} setQuery={setQuery} query={query}/>
     </div>
   );
 }
