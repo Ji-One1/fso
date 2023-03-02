@@ -9,7 +9,7 @@ const Contact = ({filteredContacts, persons, setPersons, setErrorObject}) => {
           }
           
         contactService.deleteContact(e.target.id)
-        .then(setPersons(persons.filter(person => person.id !== parseInt(e.target.id))))
+        .then(setPersons(persons.filter(person => person.id !== e.target.id)))
         .catch(() => {
             setErrorObject({action:'Deleted', name:duplicate.name, error: true})
             setTimeout(() => setErrorObject({action:'Deleted', name:duplicate.name, error: null}), 5000)
