@@ -43,9 +43,10 @@ const App = () => {
       setPersons(persons.concat(returnedPerson))
       setErrorObject({action:'Added', name:newName, error: false})
     })
+    .catch(err => setErrorObject({action:'Constraints not met', message: err, error: true}))
     }
 
-    setTimeout(() => setErrorObject({...errorObject, error: null}), 5000)
+    setTimeout(() => setErrorObject({...errorObject, error: null , message:null}), 5000)
     setNewName('')
     setNewNumber('')
     
