@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const baseUrl = "/api/persons"
+const baseUrl = "http://localhost:3001/api/persons"
 
 const getAll = () =>{
    
@@ -13,6 +13,7 @@ const create = newObject => {
     return axios
             .post(baseUrl, newObject)
             .then(response => response.data)
+            
  }
 
 const deleteContact = (id) => {
